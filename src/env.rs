@@ -2,25 +2,25 @@ use rand::{thread_rng, Rng};
 use rand::seq::SliceRandom;
 use std::io;
 
-struct Card {
+pub struct Card {
     color: bool, // true: black, false: red
     value: i16,
 }
 
-struct Gamestate {
-    dealer: i16,
-    player: i16,
-    is_terminal: bool,
-    reward: i16,
+pub struct Gamestate {
+    pub dealer: i16,
+    pub player: i16,
+    pub is_terminal: bool,
+    pub reward: i16,
 }
 
-struct Game {
-    dealer_sum: i16,
-    player_sum: i16,
+pub struct Game {
+    pub dealer_sum: i16,
+    pub player_sum: i16,
 }
 
 impl Game {
-    fn step(&mut self, a: bool) -> Gamestate { // true: hit; false: stick
+    pub fn step(&mut self, a: bool) -> Gamestate { // true: hit; false: stick
         // classic step fn
         let mut rew: i16 = 0;
         let mut terminal: bool = false;
@@ -53,7 +53,7 @@ impl Game {
         }
     }
 
-fn sum(mut sum: i16, c: Card) -> i16{
+pub fn sum(mut sum: i16, c: Card) -> i16{
     // add card c to player sum
     if c.color { // is black
         sum += c.value
@@ -73,7 +73,7 @@ fn draw_card() -> Card {
     let mut rng = thread_rng(); // create randomness
     let choices: [bool; 3] = [true, true, false];
     let color =  *choices.choose(&mut rng).unwrap();
-    let value: i16 = rng.gen_range(1..11); // get random value between 1 and 10 -> [1, 11)
+    let value: i16 = rng.gen_range(2..11); // get random value between 1 and 10 -> [1, 11)
 
     // create new card
     let new_card = Card {
@@ -105,7 +105,6 @@ pub fn main() {
     loop {
         println!("Do you want another card? [y / n]");
 
-
         io::stdin()
             .read_line(&mut input)
             .expect("That did not work. Ctrl+C this shit...");
@@ -129,6 +128,5 @@ pub fn main() {
             input.truncate(0);
         }
     }
-
 }
 
