@@ -1,11 +1,16 @@
-use ndarray::{Array2, Array3};
+use ndarray::{ArrayBase, Array2, Array3};
 use rand::prelude::*;
+
+// for binary array write
+use ndarray_npy::{WriteNpyExt, WriteNpyError};
+use std::fs::File;
+use std::io::BufWriter;
 
 pub static D: usize = 10;
 pub static P: usize = 22;
 pub static A: usize = 2;
 
-#[derive(Clone, Default)]
+// #[derive(Default)]
 pub struct Algorithm {
     pub q: Array3<f32>,
     pub v: Array2<f32>,
@@ -26,8 +31,14 @@ pub trait AlgMethods {
     }
 
     fn return_instance (i: i32) -> Algorithm {
-        Algorithm::new().get_q(i).get_v()
+        Algorithm::new()
+            .get_q(i)
+            .get_v()
+            // .write_values("") // write in this folder
+            // .expect("Write of q, v, or n has failed")
     }
+
+
 }
 
 impl Algorithm {
@@ -44,6 +55,14 @@ impl Algorithm {
         self.n[[d, p, a]] += 1;
         return self
     }
+
+    pub fn write_values(self, path_to: &str) -> Result<(), WriteNpyError> {
+        self.q.write_npy(set_buf(&path_to, "q.npy"))?;
+        self.v.write_npy(set_buf(&path_to, "v.npy"))?;
+        self.n.write_npy(set_buf(&path_to, "n.npy"))?;
+
+        Ok(())
+    }
 }
 
 pub fn greedy(n: i32) -> bool {
@@ -56,4 +75,15 @@ pub fn greedy(n: i32) -> bool {
     let choice = [(true, 1.0 - eps / 2.0), (false, eps / 2.0)];
     let mut rng = thread_rng();
     return choice.choose_weighted(&mut rng, |item| item.1).unwrap().0;
+}
+
+fn write_arr(arr: Array2<f32>, path: String) -> Result<(), WriteNpyError> {
+    let f = BufWriter::new(File::create(path)?);
+    arr.write_npy(f)?;
+    Ok(())
+}
+
+fn set_buf(path_prefix: &str, path: &str) -> BufWriter<File> {
+    let p = format!("{}{}", path_prefix, path);
+    BufWriter::new(File::create(p).unwrap())
 }
