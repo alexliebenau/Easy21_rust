@@ -1,4 +1,4 @@
-use ndarray::{ArrayBase, Array2, Array3};
+use ndarray::{Array2, Array3};
 use rand::prelude::*;
 
 // for binary array write
@@ -51,10 +51,10 @@ impl Algorithm {
         return self
     }
 
-    pub fn incr_n(mut self, d: usize, p: usize, a: usize)  -> Self {
-        self.n[[d, p, a]] += 1;
-        return self
-    }
+    // pub fn incr_n(mut self, d: usize, p: usize, a: usize)  -> Self {
+    //     self.n[[d, p, a]] += 1;
+    //     return self
+    // }
 
     pub fn write_values(self, path_to: &str) -> Result<(), WriteNpyError> {
         self.q.write_npy(set_buf(&path_to, "q.npy"))?;
@@ -77,11 +77,11 @@ pub fn greedy(n: i32) -> bool {
     return choice.choose_weighted(&mut rng, |item| item.1).unwrap().0;
 }
 
-fn write_arr(arr: Array2<f32>, path: String) -> Result<(), WriteNpyError> {
-    let f = BufWriter::new(File::create(path)?);
-    arr.write_npy(f)?;
-    Ok(())
-}
+// fn write_arr(arr: Array2<f32>, path: String) -> Result<(), WriteNpyError> {
+//     let f = BufWriter::new(File::create(path)?);
+//     arr.write_npy(f)?;
+//     Ok(())
+// }
 
 fn set_buf(path_prefix: &str, path: &str) -> BufWriter<File> {
     let p = format!("{}{}", path_prefix, path);
