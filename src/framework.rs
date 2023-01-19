@@ -10,7 +10,6 @@ pub static D: usize = 10;
 pub static P: usize = 22;
 pub static A: usize = 2;
 
-// #[derive(Default)]
 pub struct Algorithm {
     pub q: Array3<f32>,
     pub v: Array2<f32>,
@@ -19,8 +18,6 @@ pub struct Algorithm {
 
 pub trait AlgMethods {
     fn get_q(self, iterations: i32) -> Self;
-
-    // fn q_iter(self, a: usize, d: usize, p: usize) -> (Algorithm, i16, bool);
 
     fn new() -> Algorithm {
         Algorithm {
@@ -34,27 +31,18 @@ pub trait AlgMethods {
         Algorithm::new()
             .get_q(i)
             .get_v()
-            // .write_values("") // write in this folder
-            // .expect("Write of q, v, or n has failed")
     }
-
-
 }
 
 impl Algorithm {
     pub fn get_v(mut self) -> Self {
-        for _d in 0..D-1 {
-            for _p in 0..P - 1 { // get V* = max Q*(s, a)
+        for _d in 0..D {
+            for _p in 0..P { // get V* = max Q*(s, a)
                 self.v[[_d, _p]] = self.q[[_d, _p, 0]].max(self.q[[_d, _p, 1]]);
             }
         }
         return self
     }
-
-    // pub fn incr_n(mut self, d: usize, p: usize, a: usize)  -> Self {
-    //     self.n[[d, p, a]] += 1;
-    //     return self
-    // }
 
     pub fn write_values(self, path_to: &str) -> Result<(), WriteNpyError> {
         self.q.write_npy(set_buf(&path_to, "q.npy"))?;
@@ -76,12 +64,6 @@ pub fn greedy(n: i32) -> bool {
     let mut rng = thread_rng();
     return choice.choose_weighted(&mut rng, |item| item.1).unwrap().0;
 }
-
-// fn write_arr(arr: Array2<f32>, path: String) -> Result<(), WriteNpyError> {
-//     let f = BufWriter::new(File::create(path)?);
-//     arr.write_npy(f)?;
-//     Ok(())
-// }
 
 fn set_buf(path_prefix: &str, path: &str) -> BufWriter<File> {
     let p = format!("{}{}", path_prefix, path);
