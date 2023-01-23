@@ -20,22 +20,7 @@ pub struct Algorithm {
     pub n: Array<i32, Ix3>,
 }
 
-// pub trait AlgMethods<T, U: PartialOrd>
-//     where
-//         T: Copy,
-//
-// {
-//     // fn get_q<I: PartialOrd>(self, iterations: I) -> Self;
-//
-//     fn new() -> Algorithm<T>;
-// }
-
 impl Algorithm {
-    // fn return_instance<I: PartialOrd> (self, iterations: I) -> Box<Self> {
-    //     self.new()
-    //         .get_q(iterations)
-    //         .get_v()
-    // }
 
     pub fn write_values(&self, path_to: &str) -> Result<(), WriteNpyError> {
         self.q.write_npy(set_buf(&path_to, "q.npy"))?;
@@ -71,22 +56,3 @@ fn set_buf(path_prefix: &str, path: &str) -> BufWriter<File> {
     let p = format!("{}{}", path_prefix, path);
     BufWriter::new(File::create(p).unwrap())
 }
-
-// impl<T, U: PartialOrd + AlgMethods> Algorithm<T, U> {
-//     pub fn get_v(mut self) -> Self {
-//         for _d in 0..D {
-//             for _p in 0..P { // get V* = max Q*(s, a)
-//                 self.v[[_d, _p]] = &self.q[[_d, _p, 0]].max(&self.q[[_d, _p, 1]]);
-//             }
-//         }
-//         return self
-//     }
-//
-//     pub fn write_values(self, path_to: &str) -> Result<(), WriteNpyError> {
-//         self.q.write_npy(set_buf(&path_to, "q.npy"))?;
-//         self.v.write_npy(set_buf(&path_to, "v.npy"))?;
-//         self.n.write_npy(set_buf(&path_to, "n.npy"))?;
-//
-//         Ok(())
-//     }
-// }
