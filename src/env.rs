@@ -33,7 +33,7 @@ impl Game {
             }
         } else { // dealer finishes game
             while (0 <= self.dealer_sum) && (self.dealer_sum <= 17) {
-               self.dealer_sum = sum(self.dealer_sum, draw_card()) // dealer draws next card
+                self.dealer_sum = sum(self.dealer_sum, draw_card()) // dealer draws next card
             }
             if is_bust(self.dealer_sum) || self.dealer_sum < self.player_sum {
                 rew = 1;
@@ -50,8 +50,8 @@ impl Game {
             reward: rew,
         };
         return state
-        }
     }
+}
 
 pub fn sum(mut sum: i16, c: Card) -> i16{
     // add card c to player sum
@@ -115,7 +115,7 @@ pub fn main() {
             _ => {
                 println!("I could not read that input. Will end game.");
                 state = inst.step(false);
-                },
+            },
         }
 
         if state.is_terminal {
@@ -129,4 +129,3 @@ pub fn main() {
         }
     }
 }
-

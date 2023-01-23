@@ -1,12 +1,12 @@
-mod single;
-
+mod single_recursive;
+mod parallel_recursive;
 
 
 use crate::framework;
 
 
-pub fn run(i: i32) -> framework::Algorithm {
+pub fn run(i: u64) -> framework::Algorithm {
 
-   single::instance(i)
+   single_recursive::return_instance(i)
 }
 
