@@ -1,4 +1,5 @@
-use ndarray::{Array, Ix3, Ix2};
+use std::cmp::max;
+use ndarray::{Array, Ix3, Ix2, Array3, Array2};
 use rand::prelude::*;
 
 // for binary array write
@@ -8,10 +9,11 @@ use std::io::BufWriter;
 use std::ops::{Add, Div};
 use num_traits::AsPrimitive;
 use num_traits::real::Real;
+use crate::env;
 
-pub static D: usize = 10;
-pub static P: usize = 22;
-pub static A: usize = 2;
+pub const D: usize = 10;
+pub const P: usize = 22;
+pub const A: usize = 2;
 
 #[derive(Clone)]
 pub struct Algorithm {
@@ -40,6 +42,15 @@ impl Algorithm {
     }
 }
 
+pub fn init_state() -> (usize, usize) {
+    let dealer :Vec<usize> = (0..D).collect();
+    let player: Vec<usize> = (0..P).collect();
+    (
+        *dealer.choose(&mut rand::thread_rng()).unwrap(),
+        *player.choose(&mut rand::thread_rng()).unwrap()
+    )
+}
+
 pub fn greedy(n: i32) -> bool {
     // Define eps-greedy behaviour (see slides)
     // choose with a varying probability between taking the best or a random action
@@ -55,4 +66,17 @@ pub fn greedy(n: i32) -> bool {
 fn set_buf(path_prefix: &str, path: &str) -> BufWriter<File> {
     let p = format!("{}{}", path_prefix, path);
     BufWriter::new(File::create(p).unwrap())
+}
+
+pub fn get_default() -> Algorithm {
+    Algorithm {
+        q: Array3::<f32>::zeros((D, P, A)),
+        v: Array2::<f32>::zeros((D, P)),
+        n: Array3::<i32>::zeros((D, P, A))
+    }
+}
+
+pub fn yeet() -> Algorithm{
+    println!("Yeeeeeeeeeeeeeeeeeeet");
+    panic!()
 }
