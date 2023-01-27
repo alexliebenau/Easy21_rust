@@ -12,6 +12,8 @@ pub fn return_instance(iterations: u64) -> Algorithm {
     }
         .get_q_rayon(iterations)
         .get_v()
+
+    // let tst = [return_instance(100000); 100000];
 }
 
 impl Algorithm {
@@ -34,13 +36,34 @@ impl Algorithm {
 //     }
 // }
 
+struct AlgIntoIter {
+    alg: Algorithm,
+    index: usize
+}
+
+impl IntoIterator for Algorithm {
+    type Item = Algorithm;
+    type IntoIter = AlgIntoIter;
+
+    fn into_iter(self) -> Self::IntoIter {
+        AlgIntoIter {
+            alg: self,
+            index: 0
+        }
+    }
+}
+
+impl Iterator for AlgIntoIter {
+    fn next(&mut self) -> Option<>
+}
+
 impl Sum for Algorithm {
     fn sum<I: Iterator>(iter: I) -> Self {
         todo!()
     }
 }
 
-impl ParallelIterator for Algorithm {
+impl ParallelIterator for AlgIntoIter {
     type Item = Algorithm;
 
     fn sum<S>(self) -> S where S: Send + Sum<Self::Item> + Sum<S> {
