@@ -1,4 +1,3 @@
-use std::cmp::max;
 use ndarray::{Array, Ix3, Ix2, Array3, Array2};
 use rand::prelude::*;
 
@@ -6,10 +5,6 @@ use rand::prelude::*;
 use ndarray_npy::{WriteNpyExt, WriteNpyError};
 use std::fs::File;
 use std::io::BufWriter;
-use std::ops::{Add, Div};
-use num_traits::AsPrimitive;
-use num_traits::real::Real;
-use crate::env;
 
 pub const D: usize = 10;
 pub const P: usize = 22;
@@ -46,8 +41,8 @@ pub fn init_state() -> (usize, usize) {
     let dealer :Vec<usize> = (0..D).collect();
     let player: Vec<usize> = (0..P).collect();
     (
-        *dealer.choose(&mut rand::thread_rng()).unwrap(),
-        *player.choose(&mut rand::thread_rng()).unwrap()
+        *dealer.choose(&mut thread_rng()).unwrap(),
+        *player.choose(&mut thread_rng()).unwrap()
     )
 }
 
