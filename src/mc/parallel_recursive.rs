@@ -14,6 +14,7 @@ pub fn return_instance(iterations: u64) -> Algorithm {
         .get_v()
 }
 
+// For fucks sake its only reaching 100% cpu load
 
 fn get_q_parallel(iterations: u64) -> Algorithm {
 
@@ -45,8 +46,8 @@ fn get_q_parallel(iterations: u64) -> Algorithm {
                 thread::scope(|s| {
                     s.spawn(|| {
                         for _p in 0..P {
-                            let hit = q_iter(&mutvec_n, &index_arr, 0, _d.clone(), _p); // add self. remove &self
-                            let stick = q_iter(&mutvec_n, &index_arr, 1, _d.clone(), _p); // add self.
+                            let hit = q_iter(&mutvec_n, &index_arr, 0, _d.clone(), _p);
+                            let stick = q_iter(&mutvec_n, &index_arr, 1, _d.clone(), _p);
 
                             let action: usize = if hit > stick { 1 } else { 0 };
                             let q_i = *mutvec_q[index_arr[[_d.clone(), _p, action]]].lock().unwrap();

@@ -36,10 +36,13 @@ impl Algorithm {
 //     }
 // }
 
+/* Trying for vec of Alg, dont need no IntoIter
 struct AlgIntoIter {
     alg: Algorithm,
     index: usize
 }
+
+
 
 impl IntoIterator for Algorithm {
     type Item = Algorithm;
@@ -56,6 +59,8 @@ impl IntoIterator for Algorithm {
 impl Iterator for AlgIntoIter {
     fn next(&mut self) -> Option<>
 }
+
+ */
 
 impl Sum for Algorithm {
     fn sum<I: Iterator>(iter: I) -> Self {
