@@ -1,48 +1,18 @@
-use std::borrow::BorrowMut;
 use std::cmp::max;
-use std::iter::Sum;
 use std::thread;
 use std::sync::{Arc, Mutex};
-use std::thread::JoinHandle;
-use ndarray::{ArcArray, Array, array, Array2, Array3, ArrayBase, Ix3, OwnedRepr};
-use rayon::prelude::*;
+use ndarray::{Array2, Array3, ArrayBase, Ix3, OwnedRepr};
 
 use num_cpus;
-use num_traits::{FromPrimitive, Num};
 use rand::seq::SliceRandom;
-// use threadpool::ThreadPool;
-// use rusty_pool:
-// use rusty_pool::{JoinHandle, ThreadPool};
 
 use crate::{framework, env};
 use crate::framework::{Algorithm, D, P, A};
 
-// pub fn return_instance(iterations: u64) -> Algorithm {
-//     Algorithm {
-//         q: ArcArray::from(Array3::<f32>::zeros((D, P, A))).to_owned(),
-//         v: ArcArray::from(Array2::<f32>::zeros((D, P))).to_owned(),
-//         n: ArcArray::from(Array3::<i32>::zeros((D, P, A))).to_owned()
-//     }
-//         .get_q_parallel(iterations)
-//         .get_v()
-// }
 pub fn return_instance(iterations: u64) -> Algorithm {
     get_q_parallel(iterations)
         .get_v()
 }
-
-struct ToWorker {
-    q_hit: f32,
-    q_stick: f32,
-    n_hit: i32,
-    n_stick: i32
-}
-
-// impl Sum for Vec<JoinHandle<Algorithm>> {
-//     fn sum<I: Iterator>(iter: I) -> Self {
-//         todo!()
-//     }
-// }
 
 
 fn get_q_parallel(iterations: u64) -> Algorithm {
